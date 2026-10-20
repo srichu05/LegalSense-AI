@@ -1,0 +1,22 @@
+STANDARD COMMERCIAL SERVICES AGREEMENT
+
+This Agreement is entered into by and between Alpha Corp ("Client") and Beta Solutions LLC ("Contractor") (each a "Party", and collectively the "Parties").
+
+1. RECITALS AND CONSIDERATION
+WHEREAS, Client desires to retain Contractor for specialized technical consulting services, and Contractor desires to provide such services;
+NOW, THEREFORE, in consideration of the mutual covenants herein contained and other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the Parties agree as follows.
+
+2. SCOPE OF SERVICES AND EXECUTION
+Contractor shall perform the consulting services described in Exhibit A. The formal execution of this agreement by authorized representatives of both parties constitutes a binding legal commitment. The date of execution shall be recorded upon signature.
+
+3. PAYMENT AND EXPENSES
+Client agrees to pay Contractor within thirty (30) days of receiving a formal invoice. Late payments shall be subject to a finance charge of 1.5% per month or the maximum rate permitted by law.
+
+4. REMEDIES AND RELIEF
+In the event of a breach of confidentiality, the aggrieved Party shall be entitled to seek equitable relief, including injunctive relief and specific performance, in addition to any other remedies available at law.
+
+5. GOVERNING LAW AND ACTIONS
+This Agreement shall be construed and enforced in accordance with the laws of the State. Any legal action or suit arising out of or related to this Agreement shall be brought exclusively in the courts having jurisdiction.
+
+6. FORMAL INSTRUMENT
+This document represents the entire instrument and agreement between the Parties. No modification shall be effective unless in writing and executed by both Parties.
