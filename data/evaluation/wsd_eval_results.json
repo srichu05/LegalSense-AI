@@ -1,0 +1,94 @@
+{
+  "total_examples": 30,
+  "valid_wn_examples": 29,
+  "non_wn_examples": 1,
+  "baseline": {
+    "name": "Most Frequent Sense (MFS / First Sense)",
+    "correct": 9,
+    "accuracy": 0.3103,
+    "macro_f1": 0.1373
+  },
+  "extended_lesk": {
+    "name": "LegalSense Extended Lesk WSD",
+    "correct": 16,
+    "accuracy": 0.5517,
+    "macro_f1": 0.4608,
+    "coverage": 0.7586,
+    "abstention_rate": 0.2414,
+    "selective_accuracy": 0.9231,
+    "certain_count": 13
+  },
+  "domain_breakdown": {
+    "legal": {
+      "total": 10,
+      "baseline_accuracy": 0.1,
+      "lesk_accuracy": 0.8
+    },
+    "general": {
+      "total": 19,
+      "baseline_accuracy": 0.4211,
+      "lesk_accuracy": 0.4211
+    }
+  },
+  "term_breakdown": {
+    "suit": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.6667
+    },
+    "instrument": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.6667
+    },
+    "appeal": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.6667
+    },
+    "action": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.3333
+    },
+    "party": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.6667
+    },
+    "motion": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.3333
+    },
+    "relief": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.3333
+    },
+    "charge": {
+      "total": 3,
+      "baseline_accuracy": 0.0,
+      "lesk_accuracy": 0.6667
+    },
+    "execution": {
+      "total": 3,
+      "baseline_accuracy": 0.3333,
+      "lesk_accuracy": 0.6667
+    },
+    "consideration": {
+      "total": 2,
+      "baseline_accuracy": 0.5,
+      "lesk_accuracy": 0.5
+    }
+  },
+  "out_of_wordnet_cases": [
+    {
+      "id": "eval_28",
+      "term": "consideration",
+      "sentence": "The vendor agreed to transfer title in exchange for monetary consideration paid upon closing.",
+      "intended_sense": "contractual_consideration",
+      "legal_glossary_matched": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "query_id": "ret_01",
+    "query": "consideration exchanged by parties under contract",
+    "relevant_passages": [
+      {
+        "document_name": "sample_contract.txt",
+        "passage_index": 0,
+        "rationale": "Section 1 of the contract explicitly defines mutual consideration, covenants, and valuable consideration exchanged between the parties."
+      }
+    ]
+  },
+  {
+    "query_id": "ret_02",
+    "query": "equitable relief injunctive relief breach of confidentiality",
+    "relevant_passages": [
+      {
+        "document_name": "sample_contract.txt",
+        "passage_index": 1,
+        "rationale": "Section 4 explicitly governs remedies for breach of confidentiality and grants entitlement to equitable and injunctive relief."
+      }
+    ]
+  },
+  {
+    "query_id": "ret_03",
+    "query": "motion to dismiss appeal appellate court opinion",
+    "relevant_passages": [
+      {
+        "document_name": "sample_court_ruling.txt",
+        "passage_index": 0,
+        "rationale": "The court opinion explicitly details an appeal from a trial court grant of defendant's motion to dismiss."
+      }
+    ]
+  },
+  {
+    "query_id": "ret_04",
+    "query": "late payment finance charge invoice thirty days",
+    "relevant_passages": [
+      {
+        "document_name": "sample_contract.txt",
+        "passage_index": 0,
+        "rationale": "Section 3 explicitly stipulates 30-day invoice payment terms and a 1.5% monthly finance charge for late payments."
+      }
+    ]
+  },
+  {
+    "query_id": "ret_05",
+    "query": "entire instrument governing law jurisdiction",
+    "relevant_passages": [
+      {
+        "document_name": "sample_contract.txt",
+        "passage_index": 1,
+        "rationale": "Sections 5 and 6 define governing law, exclusive court jurisdiction, and the entire instrument integration clause."
+      }
+    ]
+  },
+  {
+    "query_id": "ret_06",
+    "query": "patent licensing royalty rates for semiconductors",
+    "relevant_passages": [],
+    "rationale": "Out-of-domain negative query to verify that non-matching queries receive low or zero relevance and are handled without false positives."
+  }
+]

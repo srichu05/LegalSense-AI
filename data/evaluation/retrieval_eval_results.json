@@ -1,0 +1,158 @@
+{
+  "baseline_pure_tfidf": {
+    "positive_queries": 5,
+    "negative_queries": 1,
+    "mrr": 1.0,
+    "precision@1": 1.0,
+    "precision@3": 0.4667,
+    "recall@1": 1.0,
+    "recall@3": 1.0,
+    "detailed_results": [
+      {
+        "query_id": "ret_01",
+        "query": "consideration exchanged by parties under contract",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.1668,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_02",
+        "query": "equitable relief injunctive relief breach of confidentiality",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.3326,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_03",
+        "query": "motion to dismiss appeal appellate court opinion",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.4072,
+        "top_hit_document": "sample_court_ruling.txt"
+      },
+      {
+        "query_id": "ret_04",
+        "query": "late payment finance charge invoice thirty days",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 1.0,
+        "r@3": 1.0,
+        "top_hit_score": 0.2669,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_05",
+        "query": "entire instrument governing law jurisdiction",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.3116,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_06",
+        "query": "patent licensing royalty rates for semiconductors",
+        "type": "negative",
+        "max_score": 0.0,
+        "safe": true
+      }
+    ]
+  },
+  "legalsense_compound": {
+    "positive_queries": 5,
+    "negative_queries": 1,
+    "mrr": 1.0,
+    "precision@1": 1.0,
+    "precision@3": 0.4667,
+    "recall@1": 1.0,
+    "recall@3": 1.0,
+    "detailed_results": [
+      {
+        "query_id": "ret_01",
+        "query": "consideration exchanged by parties under contract",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.3001,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_02",
+        "query": "equitable relief injunctive relief breach of confidentiality",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.5496,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_03",
+        "query": "motion to dismiss appeal appellate court opinion",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.6443,
+        "top_hit_document": "sample_court_ruling.txt"
+      },
+      {
+        "query_id": "ret_04",
+        "query": "late payment finance charge invoice thirty days",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 1.0,
+        "r@3": 1.0,
+        "top_hit_score": 0.5101,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_05",
+        "query": "entire instrument governing law jurisdiction",
+        "type": "positive",
+        "reciprocal_rank": 1.0,
+        "p@1": 1.0,
+        "r@1": 1.0,
+        "p@3": 0.3333,
+        "r@3": 1.0,
+        "top_hit_score": 0.5369,
+        "top_hit_document": "sample_contract.txt"
+      },
+      {
+        "query_id": "ret_06",
+        "query": "patent licensing royalty rates for semiconductors",
+        "type": "negative",
+        "max_score": 0.05,
+        "safe": true
+      }
+    ]
+  }
+}
