@@ -20,11 +20,17 @@ Thumbs.db
 *.egg-info/
 dist/
 build/
+frontend/dist/
+frontend/node_modules/
 
 # spaCy model (downloaded at setup)
 en_core_web_sm*
 
-# Java build artifacts (Phase 3)
+# Archives
+*.zip
+*.tar.gz
+
+# Legacy Java / Maven artifacts (retired)
 target/
 *.class
 *.jar
