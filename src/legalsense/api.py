@@ -421,6 +421,37 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     # Register blueprints
     app.register_blueprint(bp)
 
+    # CORS support for web frontend
+    @app.after_request
+    def add_cors_headers(response):
+        allowed = os.getenv("LEGAL_SENSE_CORS_ORIGIN", "*")
+        origin = request.headers.get("Origin")
+        if allowed == "*":
+            response.headers["Access-Control-Allow-Origin"] = "*"
+        elif origin and (allowed == origin or origin in [o.strip() for o in allowed.split(",")]):
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Vary"] = "Origin"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, Accept, X-Requested-With"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        return response
+
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            from flask import Response
+            res = Response(status=204)
+            allowed = os.getenv("LEGAL_SENSE_CORS_ORIGIN", "*")
+            origin = request.headers.get("Origin")
+            if allowed == "*":
+                res.headers["Access-Control-Allow-Origin"] = "*"
+            elif origin and (allowed == origin or origin in [o.strip() for o in allowed.split(",")]):
+                res.headers["Access-Control-Allow-Origin"] = origin
+                res.headers["Vary"] = "Origin"
+            res.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, Accept, X-Requested-With"
+            res.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+            return res
+
+
     # Error handlers
     @app.errorhandler(RequestEntityTooLarge)
     def handle_file_too_large(error):
