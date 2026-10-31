@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #fcfbf9;
+    --bg-surface: #ffffff;
+    --bg-parchment: #f7f4ed;
+    --border-color: #e2e8f0;
+    --border-parchment: #e6dfcf;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --ink-navy: #0f172a;
+    --ink-navy-light: #1e293b;
+    --brass-accent: #b45309;
+    --brass-gold: #d97706;
+    --brass-light: #fef3c7;
+    --brass-border: #f59e0b;
+    --card-radius: 8px;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .font-serif-title {
+    font-family: "Georgia", "Cambria", "Times New Roman", Times, serif;
+    letter-spacing: -0.015em;
+  }
+
+  code, pre, .font-mono-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+/* LegalSense Distinctive Component Custom Styling */
+.legal-parchment-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+}
+
+.legal-glossary-card {
+  background: linear-gradient(180deg, #fffdfa 0%, #fffbf0 100%);
+  border: 1px solid #fcd34d;
+  box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.07);
+}
+
+.legal-navy-header {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
