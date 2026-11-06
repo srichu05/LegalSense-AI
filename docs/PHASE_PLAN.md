@@ -39,26 +39,37 @@ Deliverables:
 
 Gate: API works without Groq credentials and returns source-grounded results. [PASSED]
 
-## Phase 3 — JavaFX frontend and integration [COMPLETED & VERIFIED]
-**Objective:** Deliver a desktop UI that uses the actual backend API.
+## Phase 3 — JavaFX Frontend and Integration [SUPERSEDED & RETIRED]
+**Status:** Superseded by Reconstructed Phase 3. The initial JavaFX desktop client was implemented, tested (22 Java tests), and verified. Per project direction, it has been retired in favor of a modern React + Vite web architecture.
+
+## Phase 3 (Reconstructed) — React + Vite Web Frontend Reconstruction [COMPLETED & VERIFIED]
+**Objective:** Replace the JavaFX desktop frontend with a modern, distinctive React + Vite web application featuring Three.js 3D lexical network visualizations and GSAP motion design.
 
 Tasks:
-1. Build a JavaFX application with Home, Text Analysis, Document Analysis, Corpus Search, and Settings views. [DONE]
-2. Connect via Java `HttpClient` with asynchronous `CompletableFuture` methods and finite timeouts. [DONE]
-3. Render target terms, candidate senses, definitions, lexical relations, uncertainty indicators, itemized overlap evidence, and ranked passages. [DONE]
-4. Render curated legal glossary entries visually distinct from WordNet senses. [DONE]
-5. Add loading indicators, duplicate submission guarding, input validation, timeouts, and user-friendly error banners. [DONE]
-6. Make backend base URL configurable with live health verification. [DONE]
-7. Add Java test suite covering models, mock HTTP server, error handling, and live API roundtrips (22 tests passed). [DONE]
-8. Verify Python backend regression test suite (142 tests passed). [DONE]
+1. Initialize React + Vite project (`frontend/`) with Tailwind CSS v4, `@tailwindcss/vite`, React Router v7, TanStack Query v5, and Lucide React. [DONE]
+2. Enable CORS in Flask REST API (`src/legalsense/api.py`) with configurable origins (`LEGAL_SENSE_CORS_ORIGIN`). [DONE]
+3. Implement centralized API client (`frontend/src/lib/api/client.js`) with AbortController timeouts, URL normalization, and unified `ApiException`. [DONE]
+4. Build classical legal editorial design system (`index.css`) with Ink Navy, Warm Ivory, and Antique Amber tokens. [DONE]
+5. Build accessible UI component library based on customized shadcn/ui (`Button`, `Card`, `Badge`, `Alert`, `Tabs`, `Input`, `Textarea`, `Skeleton`). [DONE]
+6. Implement 5 core application views:
+   - Overview (`/`): Real backend connectivity status, verified benchmark metrics, workflow shortcuts. [DONE]
+   - Text Analysis (`/text-analysis`): Interactive WSD, sample clauses, Lesk candidate ranks, token overlap evidence, separate legal glossary card. [DONE]
+   - 3D Lexical Network (`LexicalNetwork3D`): Three.js orbital graph mapping target term, synsets, and lexical relations with raycast inspection, camera controls, reduced-motion compliance, and accessible 2D table fallback. [DONE]
+   - Document Analysis (`/document-analysis`): Drag-and-drop `.txt` / `.pdf` ingestion, upload limits (5MB), and structured master-detail occurrence viewer with filtering. [DONE]
+   - Corpus Search (`/search`): Compound TF-IDF + lexical ranking, top-k slider, and explainable retrieval scores. [DONE]
+   - Settings (`/settings`): Backend base URL configuration and live ping health verification. [DONE]
+7. Add Vitest frontend test suite (17 tests passing across API client, UI workflows, and 3D visualization). [DONE]
+8. Verify production frontend build (`npm run build` succeeds). [DONE]
+9. Verify Python backend regression test suite (149 Python tests passing). [DONE]
+10. Retire legacy JavaFX frontend files (`pom.xml`, `mvnw`, `src/main`, `src/test`, `target`, `.tools`). [DONE]
 
 Deliverables:
-- Runnable JavaFX application (`com.legalsense.Launcher`, `LegalSenseApp.java`).
-- Maven project configuration with wrapper (`pom.xml`, `mvnw.cmd`, `mvnw`).
-- Dedicated HTTP API client (`com.legalsense.client.ApiClient`).
-- Unit and integration tests (22 tests passing).
+- Single authoritative React + Vite web frontend in `frontend/`.
+- 17 passing Vitest tests in `frontend/tests/`.
+- Production bundle in `frontend/dist/`.
+- Zero backend regressions (149 Python tests passing).
 
-Gate: User can submit text from JavaFX and inspect results returned by Flask. [PASSED]
+Gate: User can submit text, documents, and search queries from React and inspect results returned by Flask. [PASSED]
 
 ## Phase 4 — Evaluation, hardening and deployment [COMPLETED & VERIFIED]
 **Objective:** Validate the project and prepare final submission.

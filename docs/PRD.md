@@ -30,7 +30,7 @@ LegalSense aims to improve document exploration by:
 3. Analyze user-provided text and TXT/PDF legal documents.
 4. Provide context-aware passage search over a small corpus.
 5. Expose the backend through a documented Flask REST API.
-6. Provide a JavaFX desktop frontend.
+6. Provide a modern, responsive React + Vite web frontend with interactive Three.js 3D lexical network visualization.
 7. Evaluate WSD predictions on a manually annotated test set and document limitations.
 8. Support deployment of the lightweight backend to Render without requiring a locally hosted transformer model.
 
@@ -56,13 +56,13 @@ LegalSense aims to improve document exploration by:
 2. System tokenizes and preprocesses the text.
 3. System retrieves candidate senses from WordNet and the legal glossary where relevant.
 4. WSD engine ranks candidates using contextual evidence.
-5. UI displays the predicted sense, alternatives, lexical relations and uncertainty.
+5. UI displays the predicted sense, alternatives, lexical relations, uncertainty, and interactive 3D lexical network.
 
 ### Journey B — Analyze a document
 1. User selects a TXT or PDF document.
 2. Backend extracts text and divides it into passages.
 3. The system identifies configured target terms and runs WSD on their occurrences.
-4. UI displays analyzed terms and source-grounded passages.
+4. UI displays analyzed terms, document metadata, and source-grounded passages in a structured occurrence browser.
 
 ### Journey C — Search legal passages
 1. User enters a concept or phrase.
@@ -82,8 +82,8 @@ LegalSense aims to improve document exploration by:
 | FR-06 | Analyze user-provided plain text | Must |
 | FR-07 | Extract text from TXT and PDF files | Must |
 | FR-08 | Retrieve and rank relevant passages from a small corpus | Must |
-| FR-09 | Provide Flask endpoints with validation and documented JSON schemas | Must |
-| FR-10 | Build a JavaFX desktop frontend using Java HttpClient | Must |
+| FR-09 | Provide Flask endpoints with validation, CORS, and documented JSON schemas | Must |
+| FR-10 | Build a modern React + Vite web frontend with Three.js lexical visualization (superseding legacy JavaFX) | Must |
 | FR-11 | Continue core operation when Groq is unavailable or unconfigured | Must |
 | FR-12 | Support Render deployment without loading a transformer model | Must |
 | FR-13 | Evaluate WSD against manually annotated examples | Must |

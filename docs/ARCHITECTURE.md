@@ -3,29 +3,37 @@
 ## 1. High-level design
 
 ```text
-+-----------------------------------------------------------------------+
-|                       JavaFX Desktop Application                      |
-|                                                                       |
-|  [MainLayout] <-> [ConnectionStatusBadge] & [DisclaimerBanner]        |
-|       |                                                               |
-|       +--> [HomeView]               (Purpose, entry points, status)   |
-|       +--> [TextAnalysisView]       (Interactive WSD, samples)        |
-|       +--> [DocumentAnalysisView]   (Native file chooser, TXT/PDF)    |
-|       +--> [CorpusSearchView]       (TF-IDF & lexical search)         |
-|       +--> [SettingsView]           (Base URL config & health test)   |
-|                                                                       |
-|  [ApiClient] (java.net.http.HttpClient, non-blocking CompletableFuture)|
-|  [JsonUtils] (Jackson deserializer with resilient schema tolerance)   |
-+-----------------------------------------------------------------------+
-                                  |
-                                  | HTTP REST / JSON / Multipart
-                                  v
-+-----------------------------------------------------------------------+
-|                 Flask REST API (`wsgi.py` / `api.py`)                 |
-|                                                                       |
-|  GET  /health                  POST /api/v1/analyze                   |
-|  POST /api/v1/search           POST /api/v1/documents/analyze         |
-+-----------------------------------------------------------------------+
++-------------------------------------------------------------------------------+
+|                       React + Vite Web Frontend (`frontend/`)                 |
+|                                                                               |
+|  [AppShell] <-> [Navbar] with [BackendStatusPill] & [Footer]                  |
+|       |                                                                       |
+|       +--> [OverviewPage]           (Architecture, real health, benchmarks)  |
+|       +--> [TextAnalysisPage]       (Interactive WSD, samples, results)       |
+|       |      +--> [WsdResultCard]   (Candidate ranks, Lesk scores, GSAP)     |
+|       |      +--> [LexicalNetwork3D](Three.js 3D graph + 2D table fallback)  |
+|       |      +--> [LegalGlossaryCard] (Black's Law source-grounded card)      |
+|       |      +--> [EvidencePanel]   (Exact token overlaps)                   |
+|       +--> [DocumentAnalysisPage]   (Drag-and-drop .txt/.pdf, validation)     |
+|       |      +--> [PassageOccurrenceViewer] (Occurrence filter/inspection)   |
+|       +--> [CorpusSearchView]       (TF-IDF & lexical query ranking)         |
+|       +--> [SettingsPage]           (Base URL configuration & health test)   |
+|                                                                               |
+|  [client.js] (Fetch API, AbortController timeouts, unified ApiException)      |
+|  [TanStack Query] (Asynchronous request lifecycle & status management)       |
+|  [Three.js] (WebGL lexical graph visualization with raycasting & 2D fallback) |
+|  [GSAP] (Deliberate entry transitions & candidate selection highlighting)     |
++-------------------------------------------------------------------------------+
+                                      |
+                                      | HTTP REST / JSON / Multipart (CORS)
+                                      v
++-------------------------------------------------------------------------------+
+|                    Flask REST API (`wsgi.py` / `api.py`)                      |
+|                                                                               |
+|  GET  /health                      POST /api/v1/analyze                       |
+|  POST /api/v1/search               POST /api/v1/documents/analyze             |
+|  OPTIONS * (CORS preflight via LEGAL_SENSE_CORS_ORIGIN)                       |
++-------------------------------------------------------------------------------+
         |
         +--> Input validation / orchestration (upload limits, JSON checks)
         |
@@ -57,13 +65,14 @@
 
 ## 2. Component responsibilities & Module Boundaries
 
-### JavaFX Desktop Client (`src/main/java/com/legalsense/`)
-- **Presentation & Interaction:** Dedicated views (`HomeView`, `TextAnalysisView`, `DocumentAnalysisView`, `CorpusSearchView`, `SettingsView`).
-- **Sense Detail Presentation:** `SenseDetailCard` visually distinguishes general WordNet candidate rankings from curated legal definitions (`.legal-glossary-card`), highlighting lexical relations and exact overlap evidence.
-- **Dedicated HTTP Client (`ApiClient`):** Built with `java.net.http.HttpClient`, providing non-blocking asynchronous methods returning `CompletableFuture<T>`.
-- **UI Thread Safety:** All UI updates are marshaled back to the JavaFX Application Thread via `Platform.runLater()`.
-- **Secret Separation:** Desktop client contains zero backend secrets, database passwords, or Groq API keys.
-- **Algorithm Isolation:** Java does not re-implement or duplicate the WSD algorithm; all NLP analysis is performed on the Flask backend.
+### React + Vite Web Client (`frontend/`)
+- **Single Authoritative Frontend:** Completely supersedes the legacy JavaFX desktop application.
+- **Presentation & Interaction:** Built with React 19, Vite, Tailwind CSS v4, and customized shadcn/ui components (`Button`, `Card`, `Badge`, `Alert`, `Tabs`, `Input`, `Textarea`).
+- **Sense Detail Presentation:** Visually distinguishes general WordNet candidate rankings from curated legal definitions (`LegalGlossaryCard`), highlighting lexical relations and exact token overlap evidence (`EvidencePanel`).
+- **3D Lexical-Network Visualization (`LexicalNetwork3D`):** Three.js orbital graph mapping target term, synsets, and lexical relations. Includes node raycasting, inspection tooltips, camera controls, reduced-motion compliance, and accessible 2D table fallback.
+- **Dedicated HTTP Client (`client.js`):** Built on browser standard `fetch` with `AbortController` timeouts, automatic proxy support in dev (`/api` -> `5000`), custom base URL support, and centralized `ApiException` handling.
+- **Secret Separation:** Frontend contains zero backend secrets, database passwords, or Groq API keys. Only public `VITE_API_BASE_URL` is configured.
+- **Algorithm Isolation:** JavaScript does not duplicate WSD algorithms or lexical models; all NLP analysis remains authoritative on the Python Flask backend.
 
 ### Flask API (`src/legalsense/api.py`)
 - Endpoints: `GET /health`, `POST /api/v1/analyze`, `POST /api/v1/documents/analyze`, `POST /api/v1/search`.
@@ -118,7 +127,7 @@
 ## 4. Deployment topology
 
 - Flask runs as a lightweight web service on Render via `gunicorn wsgi:app` or locally via `python wsgi.py`.
-- JavaFX desktop client runs on the user's machine and connects to the configured endpoint (default `http://127.0.0.1:5000`).
+- React + Vite web frontend builds to static HTML/CSS/JS (`frontend/dist/`) and deploys via Render Static Sites, Vercel, or Netlify, proxying/connecting to the Flask backend.
 - WordNet data is installed into the Python runtime environment.
 - No transformer weights, GPU, or local neural models are required.
 - Groq inference is remote and entirely optional.
