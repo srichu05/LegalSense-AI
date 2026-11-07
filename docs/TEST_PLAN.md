@@ -2,48 +2,46 @@
 
 ## 1. Test Suite Overview
 
-LegalSense features a comprehensive two-tier automated testing strategy covering both the Python NLP/REST backend and the JavaFX desktop integration client:
+LegalSense features a comprehensive two-tier automated testing strategy covering both the Python NLP/REST backend and the React + Vite web frontend:
 
 - **Python Backend Test Runner:** `pytest 9.1.1`
-  - **Status:** **149 passed, 0 failed, 0 skipped** (Execution time: ~25s)
+  - **Status:** **149 passed, 0 failed, 0 skipped** (Execution time: ~36s)
   - **Configuration:** `pytest.ini` (`pythonpath = src`, `testpaths = tests`)
-- **Java Desktop Test Runner:** `Maven Surefire 3.2.5` with `JUnit 5.10.2`
-  - **Status:** **22 passed, 0 failed, 0 skipped** (Execution time: ~11s against live backend)
-  - **Build Command:** `.\mvnw.cmd test`
-- **Total Automated Test Count:** **171 tests passed across all tiers**
+  - **Execution Command:** `pytest -v`
+- **Frontend Web Test Runner:** `Vitest 5.0.5` with `@testing-library/react 16.3.2` & `jsdom`
+  - **Status:** **17 passed, 0 failed, 0 skipped** (Execution time: ~10s)
+  - **Configuration:** `frontend/vite.config.js` (`test: { environment: 'jsdom' }`)
+  - **Execution Command:** `cd frontend && npm test`
+- **Total Automated Test Count:** **166 tests passed across all active tiers**
+- **Legacy Java Client:** 22 Java tests retired alongside the JavaFX desktop client.
 
 ---
 
-## 2. Java Desktop Client Test Coverage (22 Tests)
+## 2. React + Vite Frontend Test Coverage (17 Tests)
 
-### ApiClient Unit & Mock Server Tests (`com.legalsense.client.ApiClientTest` — 10 tests)
-- **Base URL Sanitization:** Handles trailing slashes, whitespace, and resets to default `http://127.0.0.1:5000`.
-- **Health Check (`GET /health`):** Verifies parsing of status, service name, `wsd_ready`, and `llm_enabled`.
-- **Text Analysis (`POST /api/v1/analyze`):** Validates full payload roundtrip via local mock server, checking candidate senses, Extended Lesk scores, lexical relations (synonyms, hypernyms), and legal glossary entries.
-- **Client Input Validation:** Verifies immediate client-side rejection of empty or blank text without dispatching network calls.
-- **Error Response Handling:** Validates parsing of structured backend error payloads (`code` and `message`) into typed `ApiException`.
-- **Document Upload (`POST /api/v1/documents/analyze`):** Validates RFC 7578 multipart formatting with file byte stream, filename, content type, and `use_llm` form fields.
-- **Document Input Validation:** Rejects non-existent paths, unsupported file types (e.g. `.docx`), and empty (0-byte) files.
-- **Corpus Search (`POST /api/v1/search`):** Validates search query serialization and hit extraction (document name, page, score, matched terms).
-- **Search Input Validation:** Rejects empty or whitespace search queries.
-- **Network Failure & Timeouts:** Tests connection failure against unreachable endpoints, verifying human-readable messages without stack traces.
+### API Client Layer (`frontend/tests/apiClient.test.js` — 8 tests)
+- **Base URL Sanitization & Config:** Verifies default `/api` base URL, custom `VITE_API_BASE_URL` handling, and runtime `localStorage` configuration override.
+- **Health Check (`GET /health`):** Verifies request dispatch, JSON response unwrapping, and readiness inspection.
+- **Text Analysis (`POST /api/v1/analyze`):** Validates request payload serialization with text, target word, and LLM flag.
+- **Document Analysis (`POST /api/v1/documents/analyze`):** Validates RFC 7578 multipart file upload serialization with `file` form key and `use_llm` flag.
+- **Corpus Search (`POST /api/v1/search`):** Validates query string and `top_k` parameter transmission.
+- **Client Input Validation:** Immediately rejects empty or whitespace-only inputs before triggering network calls.
+- **Error Response Handling:** Maps non-2xx responses to structured `ApiException` with backend error code and HTTP status code.
+- **Network Failure & Timeouts:** Handles connection rejection and `AbortController` timeouts, providing descriptive diagnostic messages.
 
-### JSON Resilient Serialization Tests (`com.legalsense.model.JsonModelTest` — 8 tests)
-- **Forward Compatibility:** Verifies that unknown server fields are safely ignored (`FAIL_ON_UNKNOWN_PROPERTIES=false`).
-- **Request Serialization:** Validates JSON serialization of `AnalyzeRequest` and `SearchRequest`.
-- **Missing Optional Fields:** Verifies safe parsing when optional fields (`selected_sense`, `evidence`, `warnings`, `page`, `legal_glossary_entry`) are omitted or null.
-- **Lexical Relations:** Tests parsing of synonyms, hypernyms, and hyponyms lists.
-- **Glossary Details:** Tests parsing of legal jurisdiction, source provenance, examples, and limitations.
-- **Document Response:** Validates extraction of page counts, character counts, and passage occurrences.
-- **Corpus Search Response:** Validates hit ranking, score methods, and matched term arrays.
-- **Error Envelope:** Tests parsing of standard API error responses (`error.code`, `error.message`).
+### UI Workflows & Pages (`frontend/tests/uiWorkflows.test.jsx` — 6 tests)
+- **Overview Page:** Validates editorial headline, verified empirical benchmark metrics, and workflow shortcut links.
+- **Text Analysis Page:** Verifies that clicking sample clause buttons ("Contract Consideration", "Motion Excerpt", "Instrument Execution") immediately fills the clause and target word inputs.
+- **WsdResultCard Presentation:** Asserts strict visual and semantic separation between general WordNet candidate rankings and the curated amber `LegalGlossaryCard`.
+- **Uncertainty & Evidence Display:** Verifies display of the uncertainty alert badge when `uncertain=True` and token overlap evidence details.
+- **Document Analysis Workspace:** Validates drag-and-drop file upload zone, client-side 5 MB file size limit enforcement, and unsupported extension rejection.
+- **Corpus Search Workspace:** Verifies natural language query submission, top-k slider, and `SearchResultCard` score explainability disclaimers.
+- **Settings Workspace:** Verifies base URL configuration input and ping test execution against the health endpoint.
 
-### Live Backend End-to-End Tests (`com.legalsense.client.LiveBackendIntegrationTest` — 4 tests)
-- **Live Health Check:** Verifies `/health` on live Flask backend at `http://127.0.0.1:5000`.
-- **Live Text Analysis:** Submits legal text and target term "consideration", verifying that actual WordNet synsets, Lesk scores, and legal glossary entries are returned.
-- **Live Document Upload:** Sends bundled `sample_contract.txt` via multipart upload, verifying live extraction, passage segmentation, and term occurrence detection.
-- **Live Corpus Search:** Executes real TF-IDF search query "consideration contract mutual promises" against indexed legal corpus.
-*(Note: These live integration tests automatically execute whenever the local Flask server is running on port 5000, and gracefully skip via JUnit Assumptions if the server is offline).*
+### 3D Lexical-Network Visualization (`frontend/tests/visualization.test.jsx` — 3 tests)
+- **LexicalNetwork3D Rendering:** Renders Three.js orbital network canvas, target word header, and interactive controls.
+- **Accessible 2D Table Fallback:** Verifies that clicking "View 2D Table" toggles the accessible tabular view showing synset IDs, definitions, hypernyms, and hyponyms, and toggles back to 3D WebGL on demand.
+- **Graceful Empty State:** Safely renders an informative fallback message when candidate senses are empty without crashing.
 
 ---
 

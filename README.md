@@ -1,50 +1,56 @@
 # LegalSense — Context-Aware Legal Document Analysis
 
-LegalSense is a context-aware legal document analysis prototype built around **Word Sense Disambiguation (WSD)** using WordNet and lexical relations. It combines an explainable Python backend with a JavaFX desktop frontend and optional Groq-hosted contextual assistance.
+LegalSense is a context-aware legal document analysis platform built around **Word Sense Disambiguation (WSD)** using WordNet, lexical relations, and a curated legal glossary. It combines an explainable Python Flask REST backend with a modern, distinctive React + Vite web frontend featuring Three.js 3D lexical network visualizations and GSAP motion design.
 
 ---
 
-## Current Status: Phase 4 Completed & Verified (All Phases 1–4 Complete)
+## Current Status: Reconstructed Phase 3 Completed & Verified
 
-- **Phase 1 (Core WSD Engine):** Complete (WordNet, Extended Lesk, Legal Glossary).
-- **Phase 2 (Document Intelligence & Flask REST API):** Complete (TXT/PDF ingestion, segmentation, TF-IDF retrieval, REST endpoints).
-- **Phase 3 (JavaFX Desktop Client):** Complete (22 Java tests passed, live integration verified).
-- **Phase 4 (Evaluation, Hardening & Deployment):** Complete (149 Python tests, 22 Java tests, 171 tests total; WSD & retrieval evaluation scripts verified; Render deployment ready).
+- **Phase 1 (Core WSD Engine):** Complete (WordNet, Extended Lesk, Legal Glossary, uncertainty handling).
+- **Phase 2 (Document Intelligence & Flask REST API):** Complete (TXT/PDF ingestion, segmentation, TF-IDF retrieval, REST endpoints with CORS).
+- **Phase 3 (React + Vite Web Frontend Reconstruction):** Complete & Verified (Migrated from JavaFX to React + Vite, Tailwind CSS v4, Three.js 3D lexical graph, GSAP transitions, TanStack Query, React Router; 17 Vitest tests passing).
+- **Phase 4 (Evaluation, Hardening & Deployment):** Hardened (149 Python backend tests passing, 17 frontend Vitest tests passing, 166 tests total; WSD & retrieval evaluation scripts verified; Render web service & static site ready).
 - **Final Academic Project Report:** [`docs/FINAL_PROJECT_REPORT.md`](file:///c:/Users/R%20Raghavendra/Downloads/PROJECTS/LegalSense-AI/docs/FINAL_PROJECT_REPORT.md)
 
-
 ---
 
-## Key Capabilities (Phase 1 & 2)
+## Key Capabilities
 
 1. **Word Sense Disambiguation Engine:**
-   - WordNet candidate synsets, definitions, usage examples, and lexical relations (hypernyms, hyponyms).
+   - WordNet candidate synsets, definitions, usage examples, and lexical relations (hypernyms, hyponyms, synonyms).
    - Extended Lesk algorithm with weighted gloss, example, and relation overlap scoring.
    - Deterministic tie-breaking, configurable uncertainty thresholds, and itemized token overlap evidence.
    - Sourced legal glossary (10 curated terms) cleanly separated from general WordNet senses.
 
-2. **Document Ingestion & Validation:**
+2. **Distinctive 3D Lexical-Network Visualization (Three.js):**
+   - Interactive 3D orbital network graphing real API candidate synsets, hypernyms, hyponyms, and synonyms.
+   - Gold-brass central target node with synset spheres, raycasted node inspection, auto-rotation toggle, and camera controls.
+   - Fully accessible 2D table fallback available on demand and automatic fallback when WebGL is unavailable.
+
+3. **Document Ingestion & Validation:**
    - Ingestion of `.txt` and `.pdf` files (via PyMuPDF).
    - In-memory processing without persistent storage of uploads.
    - Enforces configurable upload limits (default 5 MB via `LEGAL_SENSE_MAX_UPLOAD_MB`).
    - Page-by-page extraction with page metadata retention and graceful handling of scanned PDFs.
 
-3. **Passage Segmentation:**
+4. **Passage Segmentation & Occurrence Viewer:**
    - Sentence-boundary respecting segmentation into deterministic, coherent passages.
    - Page number and character offset metadata preservation.
+   - Structured master-detail occurrence viewer with term search and passage filtering.
 
-4. **Lightweight Document Retrieval:**
+5. **Lightweight Document Retrieval:**
    - Combination of TF-IDF cosine similarity (`scikit-learn`), lexical query term matching, and legal glossary boosting.
    - Explainable scoring components (`score_method: "tfidf_lexical_wsd"`).
    - Bundled default legal corpus (`data/sample_documents/`).
 
-5. **Flask REST API:**
+6. **Flask REST API:**
    - `GET /health` — Service health and readiness.
    - `POST /api/v1/analyze` — Single-text WSD with explicit or auto-detected target terms.
    - `POST /api/v1/documents/analyze` — Multipart file upload (`.txt` or `.pdf`) with passage-level WSD.
    - `POST /api/v1/search` — Passage search over indexed corpus with ranked results.
+   - Full CORS preflight and allowed origins support (`LEGAL_SENSE_CORS_ORIGIN`).
 
-6. **Optional Groq LLM Contextual Assistance:**
+7. **Optional Groq LLM Contextual Assistance:**
    - Configured via server-side `GROQ_API_KEY` (never exposed to frontend/clients).
    - Strict candidate validation: rejects hallucinated synsets and preserves local WSD results.
    - Automatic graceful fallback on timeouts, rate limits, or missing keys.
@@ -53,7 +59,7 @@ LegalSense is a context-aware legal document analysis prototype built around **W
 
 ## Quickstart & Installation
 
-### 1. Environment Setup
+### 1. Backend Setup & Startup
 ```powershell
 # Clone or navigate to the repository
 cd LegalSense-AI
@@ -67,18 +73,45 @@ pip install -r requirements.txt
 
 # Download required NLP resources (WordNet, punkt, tagger, stopwords)
 python scripts/setup_nlp_resources.py
+
+# Start the Flask API on http://127.0.0.1:5000
+python wsgi.py
 ```
 
-### 2. Run Backend & Frontend Tests
+### 2. Frontend Setup & Startup (React + Vite)
+In a separate terminal:
 ```powershell
-# Run Python backend test suite (149 tests)
+# Navigate to the frontend directory
+cd frontend
+
+# Install npm packages
+npm install
+
+# Start local Vite development server (port 5173 with API proxy to port 5000)
+npm run dev
+```
+Open your browser to `http://localhost:5173` to access the LegalSense application.
+
+---
+
+## Testing & Quality Verification
+
+```powershell
+# Run Python backend test suite (149 tests passing)
 pytest -v
 
-# Run JavaFX client test suite (22 unit & integration tests)
-.\mvnw.cmd test
+# Run Frontend Vitest suite (17 tests passing)
+cd frontend
+npm test
+
+# Verify Frontend production build
+npm run build
 ```
 
-### 3. Run Evaluation Benchmarks
+---
+
+## Evaluation Benchmarks
+
 ```powershell
 # Run WSD benchmark (compares MFS baseline vs LegalSense Extended Lesk)
 python scripts/evaluate_wsd.py
@@ -87,31 +120,18 @@ python scripts/evaluate_wsd.py
 python scripts/evaluate_retrieval.py
 ```
 
-### 4. Start the Flask API
-```powershell
-# Local development server (port 5000)
-python wsgi.py
+---
 
+## Frontend Architecture
 
-# Or via Gunicorn (production / Render)
-gunicorn wsgi:app
-```
-The API starts on `http://127.0.0.1:5000` (or the port specified by `$env:PORT`).
-
-### 4. Launch the JavaFX Desktop Client
-```powershell
-# Launch via Maven wrapper
-.\mvnw.cmd javafx:run
-
-# Or via exec plugin
-.\mvnw.cmd exec:java
-```
-The desktop application opens with 5 integrated functional views:
-- **Home / Overview:** System purpose, live backend connectivity status, and direct tool entry points.
-- **Text Analysis:** Interactive WSD with WordNet synsets, Lesk scores, lexical relations, and curated legal glossary cards.
-- **Document Analysis:** Native file picker for `.txt` and `.pdf` files, in-memory processing, passage segmentation, and term occurrence inspection.
-- **Corpus Search:** TF-IDF and lexical passage retrieval with score explainability.
-- **Settings:** Configurable backend base URL with live health verification.
+The active frontend is a React + Vite single-page application located in `frontend/`:
+- **Design System:** Classical legal editorial palette (Ink Navy `#0f172a`, Warm Ivory `#faf9f5`, Antique Amber `#d97706`).
+- **Pages:**
+  - **Overview (`/`):** System architecture, real backend health indicator, benchmark statistics, workflow shortcuts.
+  - **Text Analysis (`/text-analysis`):** Input clause, target word, Extended Lesk candidates, token overlap evidence, separate legal glossary card, Three.js 3D lexical network.
+  - **Document Analysis (`/document-analysis`):** Drag-and-drop `.txt` / `.pdf` ingestion, upload size check, passage occurrence browser with search filtering.
+  - **Corpus Search (`/search`):** Compound TF-IDF + lexical ranking, top-k slider, explainable retrieval scores.
+  - **Settings (`/settings`):** Backend base URL configuration, ping health check test, diagnostic details.
 
 ---
 
@@ -130,18 +150,18 @@ The desktop application opens with 5 integrated functional views:
 
 | File | Purpose |
 |---|---|
-| `docs/PRD.md` | Product requirements, users, scope, requirements, acceptance criteria |
-| `docs/ARCHITECTURE.md` | Components, data flow, deployment architecture, design constraints |
-| `docs/TECH_STACK.md` | Approved technologies and rationale |
-| `docs/PHASE_PLAN.md` | Four-phase implementation sequence and completion gates |
+| `docs/PRD.md` | Product requirements, users, scope, acceptance criteria (updated for React/Vite) |
+| `docs/ARCHITECTURE.md` | Components, data flow, React + Vite frontend, Flask backend |
+| `docs/TECH_STACK.md` | Approved technologies and rationale (React, Vite, Tailwind v4, Three.js, GSAP) |
+| `docs/PHASE_PLAN.md` | Four-phase implementation sequence and reconstructed Phase 3 status |
 | `docs/WSD_DESIGN.md` | WordNet, Extended Lesk, legal glossary, and uncertainty handling |
 | `docs/API_SPEC.md` | Flask endpoints, request/response contracts, and error formats |
-| `docs/FRONTEND_SPEC.md` | JavaFX screens, interaction, and integration rules |
+| `docs/FRONTEND_SPEC.md` | React routes, components, design system, Three.js 3D visualization, and interactions |
 | `docs/DATA_AND_EVALUATION.md` | Corpus approach, annotation, metrics, and evaluation protocol |
-| `docs/DEPLOYMENT.md` | Render deployment, environment variables, operational limits |
-| `docs/TEST_PLAN.md` | Unit, integration, UI, and deployment test strategy |
-| `docs/SECURITY_AND_PRIVACY.md` | Secret handling, upload limits, and document privacy |
-| `docs/DECISIONS.md` | Recorded architecture and implementation decisions |
+| `docs/DEPLOYMENT.md` | Render static site (Vite) and web service (Flask) deployment guides |
+| `docs/TEST_PLAN.md` | Test strategy: 149 Python tests + 17 Vitest frontend tests |
+| `docs/SECURITY_AND_PRIVACY.md` | Secret handling, upload limits, CORS origin configuration, browser data |
+| `docs/DECISIONS.md` | Architecture decisions: React + Vite migration, JavaFX retirement, Three.js |
 | `docs/ANTIGRAVITY_WORKFLOW.md` | Phase discipline and execution guidelines |
-| `docs/PHASE_PROMPTS.md` | Phase master prompts and progress tracker |
-| `docs/REPORT_TEMPLATE.md` | Final project report structure |
+| `docs/PHASE_PROMPTS.md` | Phase master prompts and reconstructed Phase 3 prompt |
+| `docs/FINAL_PROJECT_REPORT.md` | Final project report structure and evaluation metrics |
